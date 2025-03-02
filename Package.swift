@@ -4,6 +4,7 @@ import PackageDescription
 
 let package = Package(
     name: "H3kit",
+    platforms: [.iOS(.v12), .macOS(.v11), .macCatalyst(.v13), .watchOS(.v6), .tvOS(.v12)],
     products: [
         .library(
             name: "H3kit",
@@ -30,5 +31,6 @@ let package = Package(
                 .target(name: "H3kit"),
             ]
         ),
-    ]
+    ],
+    swiftLanguageModes: [.v6]
 )
