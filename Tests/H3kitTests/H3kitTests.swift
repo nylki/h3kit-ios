@@ -1,6 +1,5 @@
 import CoreLocation
 @testable import H3kit
-import H3kitC
 import XCTest
 
 struct TestItem {
@@ -18,7 +17,7 @@ struct TestItem {
             coordinate: .init(latitude: 37.5642135, longitude: 127.0016985),
             resolution: 14,
             h3Index: 640371092026114823,
-            centerOfH3Index: .init(latitude: 37.56420549132848, longitude: 127.00170711617017)
+            centerOfH3Index: .init(latitude: 37.564205491328465, longitude: 127.00170711617012)
         )
     }
 }
@@ -34,15 +33,12 @@ final class H3kitTests: XCTestCase {
         
         XCTAssertEqual(calculatedIndex, expectedH3Index, "Conversion from lat, lon to h3 index")
 
-        var geoCoord = GeoCoord()
-        h3ToGeo(calculatedIndex, &geoCoord)
-        print(radsToDegs(geoCoord.lat), radsToDegs(geoCoord.lon))
-
         let neighbors = coordinate.h3Neighbors(resolution: resolution, ringLevel: 1)
         for item in neighbors {
             print(item)
         }
-        XCTAssertEqual(0, 0, "Row count was not zero.")
+        XCTAssertTrue(neighbors.contains(expectedH3Index), "We expect the known center cell to be included in the neighbors.")
+        XCTAssertEqual(neighbors.count, 7, "We expect to get 7 cells in total for for level 1 the one directly surrounding the coordinate as well as all its  6 neighbors.")
     }
     
     func testH3ToGeo() throws {
