@@ -29,11 +29,11 @@ final class H3kitTests: XCTestCase {
         let coordinate = testItem.coordinate
         let resolution = testItem.resolution
         let expectedH3Index = testItem.h3Index
-        let calculatedIndex = coordinate.h3CellIndex(resolution: resolution)
+        let calculatedIndex = try coordinate.h3CellIndex(resolution: resolution)
         
         XCTAssertEqual(calculatedIndex, expectedH3Index, "Conversion from lat, lon to h3 index")
 
-        let neighbors = coordinate.h3Neighbors(resolution: resolution, ringLevel: 1)
+        let neighbors = try coordinate.h3Neighbors(resolution: resolution, ringLevel: 1)
         for item in neighbors {
             print(item)
         }
@@ -44,7 +44,7 @@ final class H3kitTests: XCTestCase {
     func testH3ToGeo() throws {
         let testItem = TestItem.sample
         let expectedCellCenter = TestItem.sample.centerOfH3Index
-        let cellCenter = CLLocationCoordinate2D.h3CellCenter(h3Index: testItem.h3Index)
+        let cellCenter = try CLLocationCoordinate2D.h3CellCenter(h3Index: testItem.h3Index)
         XCTAssertEqual(cellCenter.latitude, expectedCellCenter.latitude, "We expect the latitude to match")
         XCTAssertEqual(cellCenter.longitude, expectedCellCenter.longitude, "We expect the longitude to match")
     }
