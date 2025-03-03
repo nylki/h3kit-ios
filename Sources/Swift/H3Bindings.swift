@@ -13,16 +13,16 @@ internal import H3kitC
 
 public typealias H3Index = UInt64
 
-extension FloatingPoint {
+public extension FloatingPoint {
     var degreesToRadians: Self { self * .pi / 180 }
     var radiansToDegrees: Self { self * 180 / .pi }
 }
 
-enum H3BindingError: Error {
+public enum H3BindingError: Error {
     case undefinedErrorCode(UInt32)
 }
 
-enum H3Error: UInt32, Error {
+public enum H3Error: UInt32, Error {
     
     // NOTE: Since Errors in Swift are not just return codes and can be thrown/catched
     // E_SUCCESS (0) will not be considered an Error! See the initializer below.
@@ -77,7 +77,7 @@ enum H3Error: UInt32, Error {
 /// Define minimal binding to the C functions
 public enum H3 {
     /// Determines the spherical coordinates of the center point of an H3 index.
-    static func cellToLatLng(h3Index: UInt64) throws -> (lat: Double, lng: Double) {
+    public static func cellToLatLng(h3Index: UInt64) throws -> (lat: Double, lng: Double) {
         var location = LatLng()
         let returnCode = H3kitC.cellToLatLng(h3Index, &location)
         if let error = try H3Error(code: returnCode) {
@@ -86,7 +86,7 @@ public enum H3 {
         return (location.lat, location.lng)
     }
 
-    static func latLngToCell(lat: Double, lng: Double, resolution: Int32) throws -> H3Index {
+    public static func latLngToCell(lat: Double, lng: Double, resolution: Int32) throws -> H3Index {
         var location = LatLng(lat: lat, lng: lng)
         var index = H3Index()
         let returnCode = H3kitC.latLngToCell(&location, resolution, &index)
@@ -96,7 +96,7 @@ public enum H3 {
         return index
     }
 
-    static func gridDisk(index: H3Index, resolution: Int32, ringLevel: Int32) -> [H3Index] {
+    public static func gridDisk(index: H3Index, resolution: Int32, ringLevel: Int32) -> [H3Index] {
         var count: Int64 = .init()
         maxGridDiskSize(ringLevel, &count)
         var cells = Array(repeating: H3Index(), count: Int(count))
