@@ -5,7 +5,7 @@ import XCTest
 struct TestItem {
 
     let coordinate: CLLocationCoordinate2D
-    let resolution: Int32
+    let resolution: H3.Resolution
     
     /// the calculated H3-Index for above latitude and longitude
     let h3Index: H3Index
@@ -15,7 +15,7 @@ struct TestItem {
     static var sample: Self {
         .init(
             coordinate: .init(latitude: 37.5642135, longitude: 127.0016985),
-            resolution: 14,
+            resolution: .fourteen,
             h3Index: 640371092026114823,
             centerOfH3Index: .init(latitude: 37.564205491328465, longitude: 127.00170711617012)
         )

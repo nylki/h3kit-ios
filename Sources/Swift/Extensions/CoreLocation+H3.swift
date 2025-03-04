@@ -10,7 +10,7 @@ public extension CLLocationCoordinate2D {
     }
     
     // Find the H3 cell index for a given set of 2D coordinates
-    func h3CellIndex(resolution: Int32) throws -> H3Index {
+    func h3CellIndex(resolution: H3.Resolution) throws -> H3Index {
         try H3.latLngToCell(
             lat: latitude.degreesToRadians,
             lng: longitude.degreesToRadians,
@@ -19,7 +19,7 @@ public extension CLLocationCoordinate2D {
     }
 
     // Find the neighbor cells for a given set of 2D coordinates and ring size
-    func h3Neighbors(resolution: Int32, ringLevel: Int32) throws -> [H3Index] {
+    func h3Neighbors(resolution: H3.Resolution, ringLevel: Int32) throws -> [H3Index] {
         try H3.neighbors(
             lat: latitude.degreesToRadians,
             lng: longitude.degreesToRadians,

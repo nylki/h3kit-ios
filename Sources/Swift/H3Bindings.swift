@@ -86,17 +86,17 @@ public enum H3 {
         return (location.lat, location.lng)
     }
 
-    public static func latLngToCell(lat: Double, lng: Double, resolution: Int32) throws -> H3Index {
+    public static func latLngToCell(lat: Double, lng: Double, resolution: Resolution) throws -> H3Index {
         var location = LatLng(lat: lat, lng: lng)
         var index = H3Index()
-        let returnCode = H3kitC.latLngToCell(&location, resolution, &index)
+        let returnCode = H3kitC.latLngToCell(&location, resolution.rawValue, &index)
         if let error = try H3Error(code: returnCode) {
             throw error
         }
         return index
     }
 
-    public static func gridDisk(index: H3Index, resolution: Int32, ringLevel: Int32) -> [H3Index] {
+    public static func gridDisk(index: H3Index, ringLevel: Int32) -> [H3Index] {
         var count: Int64 = .init()
         maxGridDiskSize(ringLevel, &count)
         var cells = Array(repeating: H3Index(), count: Int(count))

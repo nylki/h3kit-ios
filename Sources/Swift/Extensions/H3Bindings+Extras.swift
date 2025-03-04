@@ -6,10 +6,10 @@
 //
 
 /// Define convenience functions that are **not part of the upstream C spec**
-extension H3 {
+public extension H3 {
     // Find the neighbor cells for a given set of 2D coordinates in rad and ring size
-    static func neighbors(lat: Double, lng: Double, resolution: Int32, ringLevel: Int32) throws -> [H3Index] {
+    static func neighbors(lat: Double, lng: Double, resolution: Resolution, ringLevel: Int32) throws -> [H3Index] {
         let index = try latLngToCell(lat: lat, lng: lng, resolution: resolution)
-        return gridDisk(index: index, resolution: resolution, ringLevel: ringLevel)
+        return gridDisk(index: index, ringLevel: ringLevel)
     }
 }
