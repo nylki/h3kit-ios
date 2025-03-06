@@ -48,4 +48,21 @@ final class H3kitTests: XCTestCase {
         XCTAssertEqual(cellCenter.latitude, expectedCellCenter.latitude, "We expect the latitude to match")
         XCTAssertEqual(cellCenter.longitude, expectedCellCenter.longitude, "We expect the longitude to match")
     }
+    
+    func testGetResolution() throws {
+        let testItem = TestItem.sample
+        let resolution = H3.getResolution(index: testItem.h3Index)
+        XCTAssertEqual(testItem.resolution, resolution)
+    }
+    
+    func testHierarchy() throws {
+        let testItem = TestItem.sample
+        let parent = try H3.cellToParent(cell: testItem.h3Index, parentRes: .ten)
+        let parentRes = H3.getResolution(index: parent)
+        XCTAssertEqual(parentRes, .ten)
+        // We now check if we the parent we got from H3 contains the original cell as its child
+        let children = try H3.cellToChildren(cell: parent, childRes: testItem.resolution)
+        XCTAssertEqual(children.count, 2401, "We the parent to have a certain amount of children at resolution 10")
+        XCTAssertTrue(children.contains(testItem.h3Index))
+    }
 }

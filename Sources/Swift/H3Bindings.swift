@@ -95,6 +95,11 @@ public enum H3 {
         }
         return index
     }
+    
+    public static func getResolution(index: H3Index) -> Resolution? {
+        let rawRes = H3kitC.getResolution(index)
+        return .init(rawValue: rawRes)
+    }
 
     public static func gridDisk(index: H3Index, ringLevel: Int32) -> [H3Index] {
         var count: Int64 = .init()
@@ -103,4 +108,33 @@ public enum H3 {
         H3kitC.gridDisk(index, ringLevel, &cells)
         return cells
     }
+    
+    public static func cellToParent(cell: H3Index, parentRes: Resolution) throws -> H3Index {
+        var parent: H3Index = .init()
+        let returnCode = H3kitC.cellToParent(cell, parentRes.rawValue, &parent)
+        if let error = try H3Error(code: returnCode) {
+            throw error
+        }
+        return parent
+    }
+    
+    public static func cellToChildren(cell: H3Index, childRes: Resolution) throws -> [H3Index] {
+        let childrenSize = try cellToChildrenSize(cell: cell, childRes: childRes)
+        var children = Array(repeating: H3Index(), count: Int(childrenSize))
+        let returnCode = H3kitC.cellToChildren(cell, childRes.rawValue, &children)
+        if let error = try H3Error(code: returnCode) {
+            throw error
+        }
+        return children
+    }
+    
+    public static func cellToChildrenSize(cell: H3Index, childRes: Resolution) throws -> Int64 {
+        var size: Int64 = .init()
+        let returnCode = H3kitC.cellToChildrenSize(cell, childRes.rawValue, &size)
+        if let error = try H3Error(code: returnCode) {
+            throw error
+        }
+        return size
+    }
 }
+
